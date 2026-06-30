@@ -72,3 +72,12 @@ data_input = pn.widgets.DatePicker(name='Data', value=date.today(), width=260)
 sync_input = pn.widgets.Select(name='Sincronização do Agente', options={'Sim': True, 'Não': False}, width=260)
 agente_input = pn.widgets.IntInput(name='ID do Agente', value=21, width=260)
 cns_input = pn.widgets.TextInput(name='CNS do Paciente', placeholder='CNS001', width=260)
+
+# botoes
+btn_adicionar = pn.widgets.Button(name='Adicionar', button_type='default', width=130)
+btn_editar    = pn.widgets.Button(name='Editar', button_type='default', width=130)
+btn_remover   = pn.widgets.Button(name='Remover', button_type='default', width=130)
+btn_listar    = pn.widgets.Button(name='Listar', button_type='default', width=130)
+ 
+status_msg   = pn.pane.Markdown('', styles={'font-weight': 'bold'})
+titulo_lista = pn.pane.Markdown('### Lista de Visitas', visible=False)
