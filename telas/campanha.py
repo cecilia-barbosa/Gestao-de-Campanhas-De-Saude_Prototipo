@@ -15,7 +15,7 @@ pn.extension()
 # CONEXÃO COM O BANCO
 # ============================================================
 
-engine = create_engine("postgresql+psycopg2://postgres:1203@localhost:5432/trabalho_FBD")
+engine = create_engine("postgresql+psycopg2://postgres@localhost:5432/postgres")
 # ============================================================
 # FUNÇÕES CRUD
 # ============================================================
