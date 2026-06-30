@@ -50,14 +50,14 @@ CREATE TABLE Evento (
 	data date NOT NULL,
 	hora time NOT NULL,
 	id_campanha int NOT NULL,
-	FOREIGN KEY (id_campanha) REFERENCES Campanha(id_campanha)
+	FOREIGN KEY (id_campanha) REFERENCES Campanha(id_campanha) ON DELETE CASCADE
 );
 
 CREATE TABLE Equipe (
 	id_equipe SERIAL PRIMARY KEY,
 	nome_equipe varchar (100) NOT NULL,
 	id_campanha int NOT NULL,
-	FOREIGN KEY (id_campanha) REFERENCES Campanha(id_campanha)
+	FOREIGN KEY (id_campanha) REFERENCES Campanha(id_campanha) ON DELETE CASCADE
 );
 
 --Relaçao Voluntario participa de Equipe 
@@ -73,7 +73,7 @@ CREATE TABLE Equipe_de_agentes (
 	id_equipe int PRIMARY KEY,
 	id_agente int NOT NULL,
 	FOREIGN KEY (id_agente) REFERENCES Agente_de_saude(id_agente),
-	FOREIGN KEY (id_equipe) REFERENCES Equipe(id_equipe)
+	FOREIGN KEY (id_equipe) REFERENCES Equipe(id_equipe) 
 );
 
 CREATE TABLE Paciente (

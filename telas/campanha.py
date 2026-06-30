@@ -1,7 +1,6 @@
-# ============================================================
+
 # Arquivo: telas/campanhas.py
 # Tela CRUD - Tabela: Campanha
-# ============================================================
 
 import pandas as pd
 import panel as pn
@@ -11,14 +10,12 @@ from datetime import date
 
 pn.extension()
 
-# ============================================================
-# CONEXÃO COM O BANCO
-# ============================================================
 
+# CONEXÃO COM O BANCO
 engine = create_engine("postgresql+psycopg2://postgres@localhost:5432/postgres")
-# ============================================================
+
 # FUNÇÕES CRUD
-# ============================================================
+
 
 def listar_campanhas():
     with engine.connect() as conn:
@@ -79,9 +76,7 @@ def excluir_campanha(id_campanha):
         )
         conn.commit()
 
-# ============================================================
 # INTERFACE GRÁFICA
-# ============================================================
 
 campanhas_table = pn.widgets.Tabulator(
     value=pd.DataFrame(),
@@ -93,7 +88,7 @@ campanhas_table = pn.widgets.Tabulator(
     visible=False,
 )
 
-# --- Campos ---
+# Campos
 id_input          = pn.widgets.IntInput(name='ID da Campanha (Editar/Remover)', width=260)
 nome_input        = pn.widgets.TextInput(name='Nome da Campanha', placeholder='Ex: Campanha Inverno', width=260)
 objetivo_input    = pn.widgets.TextInput(name='Objetivo', placeholder='Ex: Prevenção da gripe', width=260)
@@ -101,7 +96,7 @@ data_inicio_input = pn.widgets.DatePicker(name='Data de Início', value=date.tod
 data_fim_input    = pn.widgets.DatePicker(name='Data de Fim', value=date.today(), width=260)
 gestor_input      = pn.widgets.IntInput(name='ID do Gestor', value=1, width=260)
 
-# --- Botões ---
+# Botões
 btn_adicionar = pn.widgets.Button(name='Adicionar', button_type='default', width=130)
 btn_editar    = pn.widgets.Button(name='Editar', button_type='default', width=130)
 btn_remover   = pn.widgets.Button(name='Remover', button_type='default', width=130)
@@ -110,9 +105,7 @@ btn_listar    = pn.widgets.Button(name='Listar', button_type='default', width=13
 status_msg   = pn.pane.Markdown('', styles={'font-weight': 'bold'})
 titulo_lista = pn.pane.Markdown('### Lista de Campanhas', visible=False)
 
-# ============================================================
 # FUNÇÕES AUXILIARES
-# ============================================================
 
 def atualizar_status(texto):
     status_msg.object = texto
@@ -130,17 +123,15 @@ def limpar_formulario():
     data_fim_input.value = date.today()
     gestor_input.value = 1
 
-# ============================================================
 # EVENTOS DOS BOTÕES
-# ============================================================
 
 def on_adicionar(event):
     if not nome_input.value or not objetivo_input.value or not data_inicio_input.value or not data_fim_input.value:
-        atualizar_status('⚠️ Preencha todos os campos obrigatórios.')
+        atualizar_status('Preencha todos os campos obrigatórios.')
         return
 
     if data_fim_input.value < data_inicio_input.value:
-        atualizar_status('⚠️ A data de fim não pode ser menor que a data de início.')
+        atualizar_status('A data de fim não pode ser menor que a data de início.')
         return
 
     try:
@@ -151,22 +142,22 @@ def on_adicionar(event):
             data_fim_input.value,
             gestor_input.value
         )
-        atualizar_status('✅ Campanha adicionada com sucesso.')
+        atualizar_status('Campanha adicionada com sucesso.')
         limpar_formulario()
         atualizar_tabela()
     except IntegrityError:
-        atualizar_status('❌ Erro: o ID do gestor não existe no banco.')
+        atualizar_status('Erro: o ID do gestor não existe no banco.')
     except Exception as e:
-        atualizar_status(f'❌ Erro ao adicionar: {e}')
+        atualizar_status(f'Erro ao adicionar: {e}')
 
 
 def on_editar(event):
     if id_input.value is None:
-        atualizar_status('⚠️ Informe o ID da campanha para editar.')
+        atualizar_status('Informe o ID da campanha para editar.')
         return
 
     if data_fim_input.value < data_inicio_input.value:
-        atualizar_status('⚠️ A data de fim não pode ser menor que a data de início.')
+        atualizar_status('A data de fim não pode ser menor que a data de início.')
         return
 
     try:
@@ -178,27 +169,27 @@ def on_editar(event):
             data_fim_input.value,
             gestor_input.value
         )
-        atualizar_status('✅ Campanha atualizada com sucesso.')
+        atualizar_status('Campanha atualizada com sucesso.')
         limpar_formulario()
         atualizar_tabela()
     except IntegrityError:
-        atualizar_status('❌ Erro: o ID do gestor não existe no banco.')
+        atualizar_status('Erro: o ID do gestor não existe no banco.')
     except Exception as e:
-        atualizar_status(f'❌ Erro ao editar: {e}')
+        atualizar_status(f'Erro ao editar: {e}')
 
 
 def on_remover(event):
     if id_input.value is None:
-        atualizar_status('⚠️ Informe o ID da campanha para remover.')
+        atualizar_status('Informe o ID da campanha para remover.')
         return
 
     try:
         excluir_campanha(id_input.value)
-        atualizar_status('✅ Campanha removida com sucesso.')
+        atualizar_status('Campanha removida com sucesso.')
         limpar_formulario()
         atualizar_tabela()
     except Exception as e:
-        atualizar_status(f'❌ Erro ao remover: {e}')
+        atualizar_status(f'Erro ao remover: {e}')
 
 
 def on_listar(event):
@@ -218,9 +209,7 @@ btn_editar.on_click(on_editar)
 btn_remover.on_click(on_remover)
 btn_listar.on_click(on_listar)
 
-# ============================================================
 # LAYOUT
-# ============================================================
 
 cabecalho = pn.pane.HTML("""
     <div style="
