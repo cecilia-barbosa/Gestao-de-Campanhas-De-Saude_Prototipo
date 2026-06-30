@@ -65,3 +65,10 @@ visitas_table = pn.widgets.Tabulator(
     sizing_mode='stretch_width',
     visible=False,
 )
+# campos do formulario
+id_inputc= pn.widgets.IntInput(name='ID da Visita (para Editar/Remover)', width=260)
+horario_input = pn.widgets.TextInput(name='Horário (HH:MM)', placeholder='09:00', width=260)
+data_input = pn.widgets.DatePicker(name='Data', value=date.today(), width=260)
+sync_input = pn.widgets.Select(name='Sincronização do Agente', options={'Sim': True, 'Não': False}, width=260)
+agente_input = pn.widgets.IntInput(name='ID do Agente', value=21, width=260)
+cns_input = pn.widgets.TextInput(name='CNS do Paciente', placeholder='CNS001', width=260)
