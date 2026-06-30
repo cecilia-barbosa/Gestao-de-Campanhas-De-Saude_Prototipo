@@ -116,3 +116,19 @@ def on_editar(event):
     except Exception as e:
         status_msg.object = f'Erro ao editar: {e}'
         conn.rollback()
+
+def on_listar(event):
+    if visitas_table.visible == True:
+        visitas_table.visible = False
+        titulo_lista.visible  = False
+        status_msg.object = 'Tabela oculta.'
+        return
+    visitas_table.value = listar_visitas()
+    visitas_table.visible = True
+    titulo_lista.visible  = True
+    status_msg.object = 'Tabela exibida.'
+ 
+btn_adicionar.on_click(on_adicionar)
+btn_editar.on_click(on_editar)
+btn_remover.on_click(on_remover)
+btn_listar.on_click(on_listar)
