@@ -47,3 +47,12 @@ def editar_paciente(cns, data_nascimento, sexo, longitude, latitude, rua, bairro
                "longitude": longitude, "latitude": latitude,
                "rua": rua, "bairro": bairro, "numero": numero})
         conn.commit()
+
+#funcao excluir
+def excluir_paciente(cns):
+    with engine.connect() as conn:
+        conn.execute(text("DELETE FROM Paciente WHERE cns = :cns"), {"cns": cns})
+        conn.commit()
+
+
+
