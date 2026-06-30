@@ -22,3 +22,28 @@ def listar_pacientes():
     if not df.empty:
         df['data_de_nascimento'] = pd.to_datetime(df['data_de_nascimento']).dt.date
     return df
+
+#funcao inserir
+def inserir_paciente(cns, data_nascimento, sexo, longitude, latitude, rua, bairro, numero):
+    with engine.connect() as conn:
+        conn.execute(text("""
+            INSERT INTO Paciente (cns, data_de_nascimento, sexo, longitude, latitude, rua, bairro, numero)
+            VALUES (:cns, :data_nasc, :sexo, :longitude, :latitude, :rua, :bairro, :numero)
+        """), {"cns": cns, "data_nasc": data_nascimento, "sexo": sexo,
+               "longitude": longitude, "latitude": latitude,
+               "rua": rua, "bairro": bairro, "numero": numero})
+        conn.commit()
+
+#funcao editar
+def editar_paciente(cns, data_nascimento, sexo, longitude, latitude, rua, bairro, numero):
+    with engine.connect() as conn:
+        conn.execute(text("""
+            UPDATE Paciente
+            SET data_de_nascimento = :data_nasc, sexo = :sexo,
+                longitude = :longitude, latitude = :latitude,
+                rua = :rua, bairro = :bairro, numero = :numero
+            WHERE cns = :cns
+        """), {"cns": cns, "data_nasc": data_nascimento, "sexo": sexo,
+               "longitude": longitude, "latitude": latitude,
+               "rua": rua, "bairro": bairro, "numero": numero})
+        conn.commit()
