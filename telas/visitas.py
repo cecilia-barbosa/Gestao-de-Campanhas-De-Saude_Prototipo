@@ -81,3 +81,38 @@ btn_listar    = pn.widgets.Button(name='Listar', button_type='default', width=13
  
 status_msg   = pn.pane.Markdown('', styles={'font-weight': 'bold'})
 titulo_lista = pn.pane.Markdown('### Lista de Visitas', visible=False)
+
+# limpa os campos do formulario
+def limpar_formulario():
+    id_input.value      = None
+    horario_input.value = ''
+    data_input.value    = date.today()
+    sync_input.value    = True
+    agente_input.value  = 21
+    cns_input.value     = ''
+ 
+def on_adicionar(event):
+    if horario_input.value == '' or data_input.value == None or cns_input.value == '':
+        status_msg.object = 'Preencha todos os campos obrigatórios.'
+        return
+    try:
+        inserir_visita(horario_input.value, data_input.value, sync_input.value, agente_input.value, cns_input.value)
+        status_msg.object = 'Visita adicionada com sucesso!'
+        limpar_formulario()
+        visitas_table.value = listar_visitas()
+    except Exception as e:
+        status_msg.object = f'Erro ao adicionar: {e}'
+        conn.rollback()
+ 
+def on_editar(event):
+    if id_input.value == None:
+        status_msg.object = 'Informe o ID da visita para editar.'
+        return
+    try:
+        editar_visita(id_input.value, horario_input.value, data_input.value, sync_input.value, agente_input.value, cns_input.value)
+        status_msg.object = 'Visita atualizada com sucesso.'
+        limpar_formulario()
+        visitas_table.value = listar_visitas()
+    except Exception as e:
+        status_msg.object = f'Erro ao editar: {e}'
+        conn.rollback()
