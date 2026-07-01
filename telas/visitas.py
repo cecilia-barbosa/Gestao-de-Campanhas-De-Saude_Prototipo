@@ -132,3 +132,44 @@ btn_adicionar.on_click(on_adicionar)
 btn_editar.on_click(on_editar)
 btn_remover.on_click(on_remover)
 btn_listar.on_click(on_listar)
+
+ # interface
+cabecalho = pn.pane.HTML("""
+    <div style="
+        background-color: #9BE5AA;
+        padding: 20px 32px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    ">
+        <h1 style="margin: 0; color: #1B5E20; font-size: 26px;">Registros de Visitas</h1>
+        <p style="margin: 6px 0 0 0; color: #2E7D32; font-size: 14px;">
+            Preencha os campos com os dados necessários para registrar uma visita.
+        </p>
+    </div>
+""", sizing_mode='stretch_width')
+ 
+formulario = pn.Column(
+    pn.Row(id_input, agente_input),
+    pn.Row(horario_input, data_input),
+    pn.Row(sync_input, cns_input),
+    pn.Row(btn_adicionar, btn_editar, btn_remover, btn_listar),
+    status_msg,
+    styles={
+        'background': '#F1FBF4',
+        'border': '1.5px solid #9BE5AA',
+        'border-radius': '10px',
+        'padding': '24px',
+    },
+    sizing_mode='stretch_width',
+)
+ 
+conteudo = pn.Column(
+    cabecalho,
+    formulario,
+    pn.Spacer(height=16),
+    titulo_lista,
+    visitas_table,
+    sizing_mode='stretch_width',
+)
+ 
+conteudo.servable(title='Registros de Visitas')
