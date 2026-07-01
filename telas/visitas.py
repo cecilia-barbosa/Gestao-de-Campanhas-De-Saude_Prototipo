@@ -65,6 +65,7 @@ def editar_visita(id_visita, horario, data, sincronizacao, id_agente, cns_pacien
 # função para remover uma visita
 def excluir_visita(id_visita):
     cursor = conn.cursor()
+    cursor.execute("DELETE FROM Visita_Sintomas WHERE id_visita = %s", (id_visita,))
     cursor.execute("DELETE FROM Visita WHERE id_visita = %s", (id_visita,))
     conn.commit()
     cursor.close()
