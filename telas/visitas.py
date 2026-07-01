@@ -20,12 +20,26 @@ conn = psycopg2.connect(
 # função para listar todas as visitas
 def listar_visitas():
     with engine.connect() as c:
-        resultado = c.execute(text("SELECT * FROM Visita ORDER BY id_visita"))
+        resultado = c.execute(text("""
+            SELECT
+                v.id_visita,
+                v.horario,
+                v.data,
+                v.sincronizacao_do_agente,
+                v.id_agente,
+                (u.p_nome || ' ' || u.sobrenome) AS nome_agente,
+                v.cns_paciente
+            FROM Visita v
+            JOIN Agente_de_saude a ON v.id_agente = a.id_agente
+            JOIN Usuario u ON a.id_agente = u.id_user
+            ORDER BY v.id_visita
+        """))
         colunas = list(resultado.keys())
         dados = resultado.fetchall()
     df = pd.DataFrame(dados, columns=colunas)
     df['horario'] = df['horario'].apply(lambda x: str(x)[:5])
     df['data'] = pd.to_datetime(df['data']).dt.date
+    df['sincronizacao_do_agente'] = df['sincronizacao_do_agente'].map({True: 'Sim', False: 'Não'})
     return df
 
 # função para adicionar uma visita
