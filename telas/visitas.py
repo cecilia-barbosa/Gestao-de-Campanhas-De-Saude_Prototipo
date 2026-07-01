@@ -66,7 +66,7 @@ visitas_table = pn.widgets.Tabulator(
     visible=False,
 )
 # campos do formulario
-id_inputc= pn.widgets.IntInput(name='ID da Visita (para Editar/Remover)', width=260)
+id_input = pn.widgets.IntInput(name='ID da Visita (para Editar/Remover)', width=260)
 horario_input = pn.widgets.TextInput(name='Horário (HH:MM)', placeholder='09:00', width=260)
 data_input = pn.widgets.DatePicker(name='Data', value=date.today(), width=260)
 sync_input = pn.widgets.Select(name='Sincronização do Agente', options={'Sim': True, 'Não': False}, width=260)
@@ -115,6 +115,19 @@ def on_editar(event):
         visitas_table.value = listar_visitas()
     except Exception as e:
         status_msg.object = f'Erro ao editar: {e}'
+        conn.rollback()
+
+def on_remover(event):
+    if id_input.value == None:
+        status_msg.object = 'Informe o ID da visita para remover.'
+        return
+    try:
+        excluir_visita(id_input.value)
+        status_msg.object = 'Visita removida com sucesso.'
+        limpar_formulario()
+        visitas_table.value = listar_visitas()
+    except Exception as e:
+        status_msg.object = f'Erro ao remover: {e}'
         conn.rollback()
 
 def on_listar(event):
